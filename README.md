@@ -1,6 +1,11 @@
 
 GRUPO DOMINIO: GESTION DE CLIENTES
-
+Integrantes:
+-Cano Sucso Anthony
+-Chambilla Zuñiga Josue
+-Jarro Cachi Jose
+-Rivera Mendoza Jhonny
+-Valverde Zamora Jean
 LENGUAJE: C# 
 
 BASE DE DATOS: SQL
