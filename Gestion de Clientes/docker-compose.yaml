@@ -10,7 +10,7 @@ services:
       - SA_PASSWORD=Upt.2022
     volumes:
       - ./db:/tmp
-      
+
   api:
     build: ClienteAPI/. # build the Docker image 
     container_name: api_clientes
