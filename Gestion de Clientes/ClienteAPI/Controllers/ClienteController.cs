@@ -81,20 +81,66 @@ namespace ClienteAPI.Controllers
             return NoContent();
         }
 
+
+
         // POST: api/Cliente
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        public async Task<ActionResult<Cliente>> PostCliente([FromBody] ClienteCreateDTO clienteDTO)
         {
-          if (_context.Clientes == null)
-          {
-              return Problem("Entity set 'BdClientesContext.Clientes'  is null.");
-          }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var cliente = new Cliente
+            {
+                NomCliente = clienteDTO.NomCliente,
+                ApePaterno = clienteDTO.ApePaterno,
+                ApeMaterno = clienteDTO.ApeMaterno,
+                Numero = clienteDTO.Numero,
+                Genero = clienteDTO.Genero
+            };
+
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCliente", new { id = cliente.IdCliente }, cliente);
         }
+
+        // POST: api/Cliente/Create
+        [HttpPost("Create")]
+        public async Task<ActionResult<Cliente>> PostCliente([FromBody] Cliente cliente)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.Clientes.Add(cliente);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCliente", new { id = cliente.IdCliente }, cliente);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
         // DELETE: api/Cliente/5
         [HttpDelete("{id}")]
