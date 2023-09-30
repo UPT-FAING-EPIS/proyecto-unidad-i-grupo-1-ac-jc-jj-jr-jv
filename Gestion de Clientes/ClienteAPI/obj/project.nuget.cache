@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EIi9CixSfEQR0MY42xolVj/cA989mibd4e9HLD/J2xpmeF2xzsFAQ0mZqe+wyPIqgHMz7bJrMzDdeYHuFd5CEQ==",
+  "dgSpecHash": "y5EmEejEeC9WWjyQWRJeD/sn318ZD3+SKk1peDlie6tU6TjxkGggqMgbppfZE14JuzmXLuDjb6D67H6cDtaTsg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\josue\\Desktop\\Uo\\Base de Datos II\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-JosueChambilla\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
+  "projectFilePath": "C:\\Users\\josue\\Desktop\\Uo\\Base de Datos II\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\josue\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\josue\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
