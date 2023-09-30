@@ -12,16 +12,16 @@ namespace ClienteAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TiposDocumentosController : ControllerBase
+    public class TiposDocumentoController : ControllerBase
     {
         private readonly BdClientesContext _context;
 
-        public TiposDocumentosController(BdClientesContext context)
+        public TiposDocumentoController(BdClientesContext context)
         {
             _context = context;
         }
 
-        // GET: api/TiposDocumentos
+        // GET: api/TiposDocumento
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TiposDocumento>>> GetTiposDocumentos()
         {
@@ -32,7 +32,7 @@ namespace ClienteAPI.Controllers
             return await _context.TiposDocumentos.ToListAsync();
         }
 
-        // GET: api/TiposDocumentos/5
+        // GET: api/TiposDocumento/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TiposDocumento>> GetTiposDocumento(byte id)
         {
@@ -50,7 +50,7 @@ namespace ClienteAPI.Controllers
             return tiposDocumento;
         }
 
-        // PUT: api/TiposDocumentos/5
+        // PUT: api/TiposDocumento/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTiposDocumento(byte id, TiposDocumento tiposDocumento)
@@ -81,7 +81,7 @@ namespace ClienteAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/TiposDocumentos
+        // POST: api/TiposDocumento
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<TiposDocumento>> PostTiposDocumento(TiposDocumento tiposDocumento)
@@ -96,7 +96,7 @@ namespace ClienteAPI.Controllers
             return CreatedAtAction("GetTiposDocumento", new { id = tiposDocumento.IdTipoDocumento }, tiposDocumento);
         }
 
-        // DELETE: api/TiposDocumentos/5
+        // DELETE: api/TiposDocumento/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTiposDocumento(byte id)
         {
