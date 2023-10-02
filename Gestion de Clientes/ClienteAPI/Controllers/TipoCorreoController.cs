@@ -50,51 +50,82 @@ namespace ClienteAPI.Controllers
             return tipoCorreo;
         }
 
-        // PUT: api/TipoCorreo/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoCorreo(byte id, TipoCorreo tipoCorreo)
+// PUT: api/TipoCorreo/5
+[HttpPut("{id}")]
+public async Task<IActionResult> PutTipoCorreo(byte id, [FromBody] TipoCorreoDTO tipoCorreoDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (id != tipoCorreoDTO.IdTipoCorreo)
+    {
+        return BadRequest();
+    }
+
+    var tipoCorreo = await _context.TipoCorreos.FindAsync(id);
+
+    if (tipoCorreo == null)
+    {
+        return NotFound(); // Si el tipo de correo no existe, devolver un error 404.
+    }
+
+    // Actualizar los campos del tipo de correo con los valores proporcionados en el DTO.
+    tipoCorreo.TipoCorreo1 = tipoCorreoDTO.TipoCorreo1;
+    tipoCorreo.DesTipoCorreo = tipoCorreoDTO.DesTipoCorreo;
+
+    _context.Entry(tipoCorreo).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!TipoCorreoExists(id))
         {
-            if (id != tipoCorreo.IdTipoCorreo)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(tipoCorreo).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TipoCorreoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
-
-        // POST: api/TipoCorreo
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<TipoCorreo>> PostTipoCorreo(TipoCorreo tipoCorreo)
+        else
         {
-          if (_context.TipoCorreos == null)
-          {
-              return Problem("Entity set 'BdClientesContext.TipoCorreos'  is null.");
-          }
-            _context.TipoCorreos.Add(tipoCorreo);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTipoCorreo", new { id = tipoCorreo.IdTipoCorreo }, tipoCorreo);
+            throw;
         }
+    }
+
+    return NoContent();
+}
+
+
+// POST: api/TipoCorreo
+[HttpPost]
+public async Task<ActionResult<TipoCorreoDTO>> PostTipoCorreo([FromBody] TipoCorreoDTO tipoCorreoDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    var tipoCorreo = new TipoCorreo
+    {
+        TipoCorreo1 = tipoCorreoDTO.TipoCorreo1,
+        DesTipoCorreo = tipoCorreoDTO.DesTipoCorreo
+    };
+
+    _context.TipoCorreos.Add(tipoCorreo);
+    await _context.SaveChangesAsync();
+
+    var tipoCorreoCreatedDTO = new TipoCorreoDTO
+    {
+        IdTipoCorreo = tipoCorreo.IdTipoCorreo,
+        TipoCorreo1 = tipoCorreo.TipoCorreo1,
+        DesTipoCorreo = tipoCorreo.DesTipoCorreo,
+        IdCli = tipoCorreo.IdCli // Añadir el IdCli si es necesario
+    };
+
+    return CreatedAtAction("GetTipoCorreo", new { id = tipoCorreo.IdTipoCorreo }, tipoCorreoCreatedDTO);
+}
+
 
         // DELETE: api/TipoCorreo/5
         [HttpDelete("{id}")]

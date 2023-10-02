@@ -51,50 +51,85 @@ namespace ClienteAPI.Controllers
         }
 
         // PUT: api/TipoSeguro/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoSeguro(byte id, TipoSeguro tipoSeguro)
+[HttpPut("{id}")]
+public async Task<IActionResult> PutTipoSeguro(byte id, [FromBody] TipoSeguroDTO tipoSeguroDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (id != tipoSeguroDTO.IdSeguro)
+    {
+        return BadRequest();
+    }
+
+    var tipoSeguroInDatabase = await _context.TipoSeguros.FindAsync(id);
+
+    if (tipoSeguroInDatabase == null)
+    {
+        return NotFound(); // Si el tipo de seguro no existe, devolver un error 404.
+    }
+
+    // Actualizar los campos del tipo de seguro con los valores proporcionados en el DTO.
+    tipoSeguroInDatabase.TipSeguro = tipoSeguroDTO.TipSeguro;
+    tipoSeguroInDatabase.Poliza = tipoSeguroDTO.Poliza;
+    tipoSeguroInDatabase.Cobertura = tipoSeguroDTO.Cobertura;
+    tipoSeguroInDatabase.DocumentoSeguro = tipoSeguroDTO.DocumentoSeguro;
+
+    _context.Entry(tipoSeguroInDatabase).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!TipoSeguroExists(id))
         {
-            if (id != tipoSeguro.IdSeguro)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(tipoSeguro).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TipoSeguroExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
-
-        // POST: api/TipoSeguro
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<TipoSeguro>> PostTipoSeguro(TipoSeguro tipoSeguro)
+        else
         {
-          if (_context.TipoSeguros == null)
-          {
-              return Problem("Entity set 'BdClientesContext.TipoSeguros'  is null.");
-          }
-            _context.TipoSeguros.Add(tipoSeguro);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTipoSeguro", new { id = tipoSeguro.IdSeguro }, tipoSeguro);
+            throw;
         }
+    }
+
+    return NoContent();
+}
+
+// POST: api/TipoSeguro
+[HttpPost]
+public async Task<ActionResult<TipoSeguroDTO>> PostTipoSeguro([FromBody] TipoSeguroDTO tipoSeguroDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    var tipoSeguro = new TipoSeguro
+    {
+        TipSeguro = tipoSeguroDTO.TipSeguro,
+        Poliza = tipoSeguroDTO.Poliza,
+        Cobertura = tipoSeguroDTO.Cobertura,
+        DocumentoSeguro = tipoSeguroDTO.DocumentoSeguro
+    };
+
+    _context.TipoSeguros.Add(tipoSeguro);
+    await _context.SaveChangesAsync();
+
+    var tipoSeguroCreatedDTO = new TipoSeguroDTO
+    {
+        IdSeguro = tipoSeguro.IdSeguro,
+        TipSeguro = tipoSeguro.TipSeguro,
+        Poliza = tipoSeguro.Poliza,
+        Cobertura = tipoSeguro.Cobertura,
+        DocumentoSeguro = tipoSeguro.DocumentoSeguro
+    };
+
+    return CreatedAtAction("GetTipoSeguro", new { id = tipoSeguro.IdSeguro }, tipoSeguroCreatedDTO);
+}
+
 
         // DELETE: api/TipoSeguro/5
         [HttpDelete("{id}")]
