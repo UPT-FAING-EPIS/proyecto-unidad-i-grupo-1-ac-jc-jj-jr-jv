@@ -50,51 +50,82 @@ namespace ClienteAPI.Controllers
             return clienteDetalle;
         }
 
-        // PUT: api/ClienteDetalle/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutClienteDetalle(byte id, ClienteDetalle clienteDetalle)
+// PUT: api/ClienteDetalle/5
+[HttpPut("{id}")]
+public async Task<IActionResult> PutClienteDetalle(byte id, [FromBody] ClienteDetalleDTO clienteDetalleDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (id != clienteDetalleDTO.IdCliDet)
+    {
+        return BadRequest();
+    }
+
+    var clienteDetalle = await _context.ClienteDetalles.FindAsync(id);
+
+    if (clienteDetalle == null)
+    {
+        return NotFound(); // Si el clienteDetalle no existe, devolver un error 404.
+    }
+
+    // Actualizar los campos del clienteDetalle con los valores proporcionados en el DTO.
+    clienteDetalle.IdCli = clienteDetalleDTO.IdCli;
+    clienteDetalle.Correo = clienteDetalleDTO.Correo;
+    clienteDetalle.Seguro = clienteDetalleDTO.Seguro;
+    clienteDetalle.Direccion = clienteDetalleDTO.Direccion;
+    clienteDetalle.Documento = clienteDetalleDTO.Documento;
+    clienteDetalle.Residencia = clienteDetalleDTO.Residencia;
+
+    _context.Entry(clienteDetalle).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!ClienteDetalleExists(id))
         {
-            if (id != clienteDetalle.IdCliDet)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(clienteDetalle).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClienteDetalleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
-
-        // POST: api/ClienteDetalle
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<ClienteDetalle>> PostClienteDetalle(ClienteDetalle clienteDetalle)
+        else
         {
-          if (_context.ClienteDetalles == null)
-          {
-              return Problem("Entity set 'BdClientesContext.ClienteDetalles'  is null.");
-          }
-            _context.ClienteDetalles.Add(clienteDetalle);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetClienteDetalle", new { id = clienteDetalle.IdCliDet }, clienteDetalle);
+            throw;
         }
+    }
+
+    return NoContent();
+}
+
+
+// POST: api/ClienteDetalle
+[HttpPost]
+public async Task<ActionResult<ClienteDetalleDTO>> PostClienteDetalle([FromBody] ClienteDetalleDTO clienteDetalleDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    var clienteDetalle = new ClienteDetalle
+    {
+        IdCli = clienteDetalleDTO.IdCli,
+        Correo = clienteDetalleDTO.Correo,
+        Seguro = clienteDetalleDTO.Seguro,
+        Direccion = clienteDetalleDTO.Direccion,
+        Documento = clienteDetalleDTO.Documento,
+        Residencia = clienteDetalleDTO.Residencia
+    };
+
+    _context.ClienteDetalles.Add(clienteDetalle);
+    await _context.SaveChangesAsync();
+
+    return CreatedAtAction("GetClienteDetalle", new { id = clienteDetalle.IdCliDet }, clienteDetalleDTO);
+}
+
 
         // DELETE: api/ClienteDetalle/5
         [HttpDelete("{id}")]
