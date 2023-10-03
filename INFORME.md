@@ -40,10 +40,7 @@
 
   * 6.1. Diagramas de Casos de Uso
 
-      ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/73675560-d6e0-4097-a0d1-d5f4ae5b68c8)
-
-      ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/63f3fea8-3f1f-45d8-a4f4-4e95e397165c)
-
+   
 
 
   * 6.2. Diagrama de Clases
@@ -54,7 +51,14 @@
 
   * 6.5. Diagrama de Base de Datos
 
+
   * 7 Bibliografia
+
+    
+
+      
+
+    
 
   * 8 Anexos
 
@@ -133,6 +137,11 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
 
 # Diagramas  
 - Diagramas de Casos de Uso.
+
+     ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/73675560-d6e0-4097-a0d1-d5f4ae5b68c8)
+
+     ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/63f3fea8-3f1f-45d8-a4f4-4e95e397165c)
+
 - Diagrama de Clases.
 - Diagrama de Componentes.
 
@@ -140,9 +149,16 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
 
 # Diagrama de Base de Datos
 
+   ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/45c1a445-0ded-42d2-a666-72be3686c289)
+
+
 
 # Bibliografía
 
+
+- Acosta, R. (n.d.). Swagger - Cómo documentar servicios Web API de ASP.NET Core. https://www.rafaelacosta.net/Blog/2019/7/8/swagger-c%c3%b3mo-documentar-servicios-web-api-de-aspnet-core? 
+      AspxAutoDetectCookieSupport=1
+  
 
 # Diccionario de Datos de la Base de Datos Relacional
 
