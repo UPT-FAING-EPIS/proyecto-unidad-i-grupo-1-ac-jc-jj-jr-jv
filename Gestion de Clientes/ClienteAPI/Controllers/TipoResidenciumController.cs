@@ -54,6 +54,7 @@ namespace ClienteAPI.Controllers
         }
 
         // PUT: api/TipoResidencium/5
+<<<<<<< HEAD
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTipoResidencium(byte id, TipoResidenciumDTO tipoResidenciumDTO)
@@ -98,7 +99,87 @@ namespace ClienteAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTipoResidencium", new { id = tipoResidencium.IdResidencia }, tipoResidencium);
+=======
+[HttpPut("{id}")]
+public async Task<IActionResult> PutTipoResidencium(byte id, [FromBody] TipoResidenciumDTO tipoResidenciumDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (id != tipoResidenciumDTO.IdResidencia)
+    {
+        return BadRequest();
+    }
+
+    var tipoResidenciumInDatabase = await _context.TipoResidencia.FindAsync(id);
+
+    if (tipoResidenciumInDatabase == null)
+    {
+        return NotFound(); // Si el tipo de residencia no existe, devolver un error 404.
+    }
+
+    // Actualizar los campos del tipo de residencia con los valores proporcionados en el DTO.
+    tipoResidenciumInDatabase.DesTipResi = tipoResidenciumDTO.DesTipResi;
+    tipoResidenciumInDatabase.Pais = tipoResidenciumDTO.Pais;
+    tipoResidenciumInDatabase.Ciudad = tipoResidenciumDTO.Ciudad;
+    tipoResidenciumInDatabase.Provincia = tipoResidenciumDTO.Provincia;
+
+    _context.Entry(tipoResidenciumInDatabase).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!TipoResidenciumExists(id))
+        {
+            return NotFound();
         }
+        else
+        {
+            throw;
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
+        }
+    }
+
+    return NoContent();
+}
+
+// POST: api/TipoResidencium
+[HttpPost]
+public async Task<ActionResult<TipoResidenciumDTO>> PostTipoResidencium([FromBody] TipoResidenciumDTO tipoResidenciumDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    var tipoResidencium = new TipoResidencium
+    {
+        DesTipResi = tipoResidenciumDTO.DesTipResi,
+        Pais = tipoResidenciumDTO.Pais,
+        Ciudad = tipoResidenciumDTO.Ciudad,
+        Provincia = tipoResidenciumDTO.Provincia
+    };
+
+    _context.TipoResidencia.Add(tipoResidencium);
+    await _context.SaveChangesAsync();
+
+    var tipoResidenciumCreatedDTO = new TipoResidenciumDTO
+    {
+        IdResidencia = tipoResidencium.IdResidencia,
+        DesTipResi = tipoResidencium.DesTipResi,
+        Pais = tipoResidencium.Pais,
+        Ciudad = tipoResidencium.Ciudad,
+        Provincia = tipoResidencium.Provincia
+    };
+
+    return CreatedAtAction("GetTipoResidencium", new { id = tipoResidencium.IdResidencia }, tipoResidenciumCreatedDTO);
+}
+
 
         // DELETE: api/TipoResidencium/5
         [HttpDelete("{id}")]

@@ -9,9 +9,17 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ClienteAPI
 build_property.RootNamespace = ClienteAPI
+<<<<<<< HEAD
 build_property.ProjectDir = c:\Users\Usuario\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv\Gestion de Clientes\ClienteAPI\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = c:\Users\Usuario\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv\Gestion de Clientes\ClienteAPI
+=======
+build_property.ProjectDir = c:\Users\hp\LLLLLLLLLLLLLLLLLL\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\Gestion de Clientes\ClienteAPI\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = c:\Users\hp\LLLLLLLLLLLLLLLLLL\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\Gestion de Clientes\ClienteAPI
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
 build_property._RazorSourceGeneratorDebug = 

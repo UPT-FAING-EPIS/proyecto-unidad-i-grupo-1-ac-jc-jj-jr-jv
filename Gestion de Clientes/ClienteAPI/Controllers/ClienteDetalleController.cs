@@ -54,6 +54,7 @@ namespace ClienteAPI.Controllers
             return clienteDetalle;
         }
 
+<<<<<<< HEAD
         // PUT: api/ClienteDetalle/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -99,7 +100,84 @@ namespace ClienteAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetClienteDetalle", new { id = clienteDetalle.IdCliDet }, clienteDetalle);
+=======
+// PUT: api/ClienteDetalle/5
+[HttpPut("{id}")]
+public async Task<IActionResult> PutClienteDetalle(byte id, [FromBody] ClienteDetalleDTO clienteDetalleDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (id != clienteDetalleDTO.IdCliDet)
+    {
+        return BadRequest();
+    }
+
+    var clienteDetalle = await _context.ClienteDetalles.FindAsync(id);
+
+    if (clienteDetalle == null)
+    {
+        return NotFound(); // Si el clienteDetalle no existe, devolver un error 404.
+    }
+
+    // Actualizar los campos del clienteDetalle con los valores proporcionados en el DTO.
+    clienteDetalle.IdCli = clienteDetalleDTO.IdCli;
+    clienteDetalle.Correo = clienteDetalleDTO.Correo;
+    clienteDetalle.Seguro = clienteDetalleDTO.Seguro;
+    clienteDetalle.Direccion = clienteDetalleDTO.Direccion;
+    clienteDetalle.Documento = clienteDetalleDTO.Documento;
+    clienteDetalle.Residencia = clienteDetalleDTO.Residencia;
+
+    _context.Entry(clienteDetalle).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!ClienteDetalleExists(id))
+        {
+            return NotFound();
         }
+        else
+        {
+            throw;
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
+        }
+    }
+
+    return NoContent();
+}
+
+
+// POST: api/ClienteDetalle
+[HttpPost]
+public async Task<ActionResult<ClienteDetalleDTO>> PostClienteDetalle([FromBody] ClienteDetalleDTO clienteDetalleDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    var clienteDetalle = new ClienteDetalle
+    {
+        IdCli = clienteDetalleDTO.IdCli,
+        Correo = clienteDetalleDTO.Correo,
+        Seguro = clienteDetalleDTO.Seguro,
+        Direccion = clienteDetalleDTO.Direccion,
+        Documento = clienteDetalleDTO.Documento,
+        Residencia = clienteDetalleDTO.Residencia
+    };
+
+    _context.ClienteDetalles.Add(clienteDetalle);
+    await _context.SaveChangesAsync();
+
+    return CreatedAtAction("GetClienteDetalle", new { id = clienteDetalle.IdCliDet }, clienteDetalleDTO);
+}
+
 
         // DELETE: api/ClienteDetalle/5
         [HttpDelete("{id}")]

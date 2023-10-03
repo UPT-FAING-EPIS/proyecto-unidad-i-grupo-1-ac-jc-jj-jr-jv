@@ -11812,24 +11812,40 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\Usuario\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+=======
+    "C:\\Users\\hp\\.nuget\\packages\\": {}
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Usuario\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
       "projectName": "ClienteAPI",
       "projectPath": "C:\\Users\\Usuario\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
       "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Usuario\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv\\Gestion de Clientes\\ClienteAPI\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
+      "projectName": "ClienteAPI",
+      "projectPath": "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
+      "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\obj\\",
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+=======
+        "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11837,7 +11853,10 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+<<<<<<< HEAD
         "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+=======
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11916,7 +11935,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+=======
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
       }
     }
   }

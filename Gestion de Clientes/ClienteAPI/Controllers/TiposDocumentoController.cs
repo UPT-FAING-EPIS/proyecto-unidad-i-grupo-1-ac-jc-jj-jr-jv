@@ -54,6 +54,7 @@ namespace ClienteAPI.Controllers
         }
 
         // PUT: api/TiposDocumento/5
+<<<<<<< HEAD
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTiposDocumento(byte id, TiposDocumentoDTO tiposDocumentoDTO)
@@ -98,7 +99,90 @@ namespace ClienteAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTiposDocumento", new { id = tiposDocumento.IdTipoDocumento }, tiposDocumento);
+=======
+[HttpPut("{id}")]
+public async Task<IActionResult> PutTiposDocumento(byte id, [FromBody] TiposDocumentoDTO tiposDocumentoDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    if (id != tiposDocumentoDTO.IdTipoDocumento)
+    {
+        return BadRequest();
+    }
+
+    var tiposDocumentoInDatabase = await _context.TiposDocumentos.FindAsync(id);
+
+    if (tiposDocumentoInDatabase == null)
+    {
+        return NotFound(); // Si el tipo de documento no existe, devolver un error 404.
+    }
+
+    // Actualizar los campos del tipo de documento con los valores proporcionados en el DTO.
+    tiposDocumentoInDatabase.DesTipoDocumento = tiposDocumentoDTO.DesTipoDocumento;
+    tiposDocumentoInDatabase.NumDocumento = tiposDocumentoDTO.NumDocumento;
+    tiposDocumentoInDatabase.FechaEmision = tiposDocumentoDTO.FechaEmision;
+    tiposDocumentoInDatabase.FechaVencimiento = tiposDocumentoDTO.FechaVencimiento;
+    tiposDocumentoInDatabase.Imagen = tiposDocumentoDTO.Imagen;
+
+    _context.Entry(tiposDocumentoInDatabase).State = EntityState.Modified;
+
+    try
+    {
+        await _context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+        if (!TiposDocumentoExists(id))
+        {
+            return NotFound();
         }
+        else
+        {
+            throw;
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
+        }
+    }
+
+    return NoContent();
+}
+
+// POST: api/TiposDocumento
+[HttpPost]
+public async Task<ActionResult<TiposDocumentoDTO>> PostTiposDocumento([FromBody] TiposDocumentoDTO tiposDocumentoDTO)
+{
+    if (!ModelState.IsValid)
+    {
+        return BadRequest(ModelState);
+    }
+
+    var tiposDocumento = new TiposDocumento
+    {
+        DesTipoDocumento = tiposDocumentoDTO.DesTipoDocumento,
+        NumDocumento = tiposDocumentoDTO.NumDocumento,
+        FechaEmision = tiposDocumentoDTO.FechaEmision,
+        FechaVencimiento = tiposDocumentoDTO.FechaVencimiento,
+        Imagen = tiposDocumentoDTO.Imagen
+    };
+
+    _context.TiposDocumentos.Add(tiposDocumento);
+    await _context.SaveChangesAsync();
+
+    var tiposDocumentoCreatedDTO = new TiposDocumentoDTO
+    {
+        IdTipoDocumento = tiposDocumento.IdTipoDocumento,
+        DesTipoDocumento = tiposDocumento.DesTipoDocumento,
+        NumDocumento = tiposDocumento.NumDocumento,
+        FechaEmision = tiposDocumento.FechaEmision,
+        FechaVencimiento = tiposDocumento.FechaVencimiento,
+        Imagen = tiposDocumento.Imagen
+    };
+
+    return CreatedAtAction("GetTiposDocumento", new { id = tiposDocumento.IdTipoDocumento }, tiposDocumentoCreatedDTO);
+}
+
 
         // DELETE: api/TiposDocumento/5
         [HttpDelete("{id}")]

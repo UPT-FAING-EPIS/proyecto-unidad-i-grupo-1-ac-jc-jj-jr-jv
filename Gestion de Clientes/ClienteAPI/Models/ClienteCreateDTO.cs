@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using FluentValidation;
+=======
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
 
 namespace ClienteAPI.Models
 {
     public class ClienteCreateDTO
     {
+<<<<<<< HEAD
         public int IdCliente { get; set; }
         public string Nombre { get; set; }
 
@@ -14,10 +18,21 @@ namespace ClienteAPI.Models
         public string ApellidoMaterno { get; set; }
 
         public int Celular { get; set; }
+=======
+        public int? IdCliente { get; set; }
+        public string NomCliente { get; set; }
+
+        public string ApePaterno { get; set; }
+
+        public string ApeMaterno { get; set; }
+
+        public int Numero { get; set; }
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
 
         public string? Genero { get; set; }
     }
 
+<<<<<<< HEAD
     public class ClienteValidator : AbstractValidator<ClienteCreateDTO>
     {
         public ClienteValidator(){
@@ -38,4 +53,6 @@ namespace ClienteAPI.Models
         }
     }
 
+=======
+>>>>>>> e6bea6542e711101d2348b7149afdc02d34216da
 }
