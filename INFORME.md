@@ -40,53 +40,9 @@
 
   * 6.1. Diagramas de Casos de Uso
 
+      ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/73675560-d6e0-4097-a0d1-d5f4ae5b68c8)
 
-+-------------------+              +-------------------------+
-|     Actor:       |              |    Sistema/API:         |
-|                 |              |                         |
-|     Swagger     |              |                         |
-|                 |              |                         |
-+-------------------+              +-------------------------+
-        |                                 |
-        |                                 |
-        |                                 |
-        | Realiza                         | Realiza
-        | GET Request                     | POST Request
-        |                                 |
-        v                                 v
-+-------------------+              +-------------------------+
-|  Caso de Uso:    |              |  Caso de Uso:           |
-|                 |              |                         |
-|  Consultar API   |              |  Crear Recurso          |
-|                 |              |                         |
-+-------------------+              +-------------------------+
-        |                                 |
-        |                                 |
-        |                                 |
-        | Realiza                         | Realiza
-        | PUT Request                     | PATCH Request
-        |                                 |
-        v                                 v
-+-------------------+              +-------------------------+
-|  Caso de Uso:    |              |  Caso de Uso:           |
-|                 |              |                         |
-|  Actualizar Recurso|            |  Actualizar Recurso     |
-|                 |              |                         |
-+-------------------+              +-------------------------+
-        |                                 |
-        |                                 |
-        |                                 |
-        | Realiza                         | Realiza
-        | DELETE Request                  | DELETE Request
-        |                                 |
-        v                                 v
-+-------------------+              +-------------------------+
-|  Caso de Uso:    |              |  Caso de Uso:           |
-|                 |              |                         |
-|  Eliminar Recurso  |            |  Eliminar Recurso      |
-|                 |              |                         |
-+-------------------+              +-------------------------+
-
+      ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/63f3fea8-3f1f-45d8-a4f4-4e95e397165c)
 
 
 
