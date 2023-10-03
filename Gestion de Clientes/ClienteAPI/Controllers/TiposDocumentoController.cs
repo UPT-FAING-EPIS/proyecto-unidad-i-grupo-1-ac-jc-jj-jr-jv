@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,11 @@ namespace ClienteAPI.Controllers
     public class TiposDocumentoController : ControllerBase
     {
         private readonly BdClientesContext _context;
+        private readonly IMapper _mapper;
 
-        public TiposDocumentoController(BdClientesContext context)
+        public TiposDocumentoController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -53,13 +56,13 @@ namespace ClienteAPI.Controllers
         // PUT: api/TiposDocumento/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTiposDocumento(byte id, TiposDocumento tiposDocumento)
+        public async Task<IActionResult> PutTiposDocumento(byte id, TiposDocumentoDTO tiposDocumentoDTO)
         {
-            if (id != tiposDocumento.IdTipoDocumento)
+            if (id != tiposDocumentoDTO.IdTipoDocumento)
             {
                 return BadRequest();
             }
-
+            TiposDocumento tiposDocumento = _mapper.Map<TiposDocumento>(tiposDocumentoDTO);
             _context.Entry(tiposDocumento).State = EntityState.Modified;
 
             try
@@ -84,12 +87,13 @@ namespace ClienteAPI.Controllers
         // POST: api/TiposDocumento
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TiposDocumento>> PostTiposDocumento(TiposDocumento tiposDocumento)
+        public async Task<ActionResult<TiposDocumentoDTO>> PostTiposDocumento(TiposDocumentoDTO tiposDocumentoDTO)
         {
           if (_context.TiposDocumentos == null)
           {
               return Problem("Entity set 'BdClientesContext.TiposDocumentos'  is null.");
           }
+          TiposDocumento tiposDocumento = _mapper.Map<TiposDocumento>(tiposDocumentoDTO);
             _context.TiposDocumentos.Add(tiposDocumento);
             await _context.SaveChangesAsync();
 

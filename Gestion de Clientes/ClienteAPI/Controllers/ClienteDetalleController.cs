@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,10 +16,13 @@ namespace ClienteAPI.Controllers
     public class ClienteDetalleController : ControllerBase
     {
         private readonly BdClientesContext _context;
+        private readonly IMapper _mapper;
 
-        public ClienteDetalleController(BdClientesContext context)
+        public ClienteDetalleController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
+            
         }
 
         // GET: api/ClienteDetalle
@@ -53,14 +57,14 @@ namespace ClienteAPI.Controllers
         // PUT: api/ClienteDetalle/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClienteDetalle(byte id, ClienteDetalle clienteDetalle)
+        public async Task<IActionResult> PutClienteDetalle(byte id, ClienteDetalleDTO clienteDetalleDTO)
         {
-            if (id != clienteDetalle.IdCliDet)
+            if (id != clienteDetalleDTO.IdCliDet)
             {
                 return BadRequest();
             }
-
-            _context.Entry(clienteDetalle).State = EntityState.Modified;
+            ClienteDetalle clienteDetalle = _mapper.Map<ClienteDetalle>(clienteDetalleDTO);
+            _context.Entry(clienteDetalleDTO).State = EntityState.Modified;
 
             try
             {
@@ -84,12 +88,13 @@ namespace ClienteAPI.Controllers
         // POST: api/ClienteDetalle
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ClienteDetalle>> PostClienteDetalle(ClienteDetalle clienteDetalle)
+        public async Task<ActionResult<ClienteDetalleDTO>> PostClienteDetalle(ClienteDetalleDTO clienteDetalleDTO)
         {
           if (_context.ClienteDetalles == null)
           {
               return Problem("Entity set 'BdClientesContext.ClienteDetalles'  is null.");
           }
+        ClienteDetalle clienteDetalle = _mapper.Map<ClienteDetalle>(clienteDetalleDTO);
             _context.ClienteDetalles.Add(clienteDetalle);
             await _context.SaveChangesAsync();
 

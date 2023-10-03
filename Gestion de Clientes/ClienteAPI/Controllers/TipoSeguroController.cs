@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,11 @@ namespace ClienteAPI.Controllers
     public class TipoSeguroController : ControllerBase
     {
         private readonly BdClientesContext _context;
+        private readonly IMapper _mapper;
 
-        public TipoSeguroController(BdClientesContext context)
+        public TipoSeguroController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -53,13 +56,13 @@ namespace ClienteAPI.Controllers
         // PUT: api/TipoSeguro/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoSeguro(byte id, TipoSeguro tipoSeguro)
+        public async Task<IActionResult> PutTipoSeguro(byte id, TipoSeguroDTO tipoSeguroDTO)
         {
-            if (id != tipoSeguro.IdSeguro)
+            if (id != tipoSeguroDTO.IdSeguro)
             {
                 return BadRequest();
             }
-
+            TipoSeguro tipoSeguro = _mapper.Map<TipoSeguro>(tipoSeguroDTO);
             _context.Entry(tipoSeguro).State = EntityState.Modified;
 
             try
@@ -84,12 +87,13 @@ namespace ClienteAPI.Controllers
         // POST: api/TipoSeguro
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TipoSeguro>> PostTipoSeguro(TipoSeguro tipoSeguro)
+        public async Task<ActionResult<TipoSeguro>> PostTipoSeguro(TipoSeguroDTO tipoSeguroDTO)
         {
           if (_context.TipoSeguros == null)
           {
               return Problem("Entity set 'BdClientesContext.TipoSeguros'  is null.");
           }
+          TipoSeguro tipoSeguro = _mapper.Map<TipoSeguro>(tipoSeguroDTO);
             _context.TipoSeguros.Add(tipoSeguro);
             await _context.SaveChangesAsync();
 

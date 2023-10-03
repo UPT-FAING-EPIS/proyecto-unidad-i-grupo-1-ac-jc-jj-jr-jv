@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,10 @@ namespace ClienteAPI.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly BdClientesContext _context;
-
-        public ClienteController(BdClientesContext context)
+        private readonly IMapper _mapper;
+        public ClienteController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -53,13 +55,13 @@ namespace ClienteAPI.Controllers
         // PUT: api/Cliente/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
+        public async Task<IActionResult> PutCliente(int id, ClienteCreateDTO clienteDTO)
         {
-            if (id != cliente.IdCliente)
+            if (id != clienteDTO.IdCliente)
             {
                 return BadRequest();
             }
-
+            Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
             _context.Entry(cliente).State = EntityState.Modified;
 
             try
@@ -81,66 +83,21 @@ namespace ClienteAPI.Controllers
             return NoContent();
         }
 
-
-
         // POST: api/Cliente
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente([FromBody] ClienteCreateDTO clienteDTO)
+        public async Task<ActionResult<ClienteCreateDTO>> PostCliente(ClienteCreateDTO clienteDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var cliente = new Cliente
-            {
-                NomCliente = clienteDTO.NomCliente,
-                ApePaterno = clienteDTO.ApePaterno,
-                ApeMaterno = clienteDTO.ApeMaterno,
-                Numero = clienteDTO.Numero,
-                Genero = clienteDTO.Genero
-            };
-
+          if (_context.Clientes == null)
+          {
+              return Problem("Entity set 'BdClientesContext.Clientes'  is null.");
+          }
+          Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCliente", new { id = cliente.IdCliente }, cliente);
         }
-
-        // POST: api/Cliente/Create
-        [HttpPost("Create")]
-        public async Task<ActionResult<Cliente>> PostCliente([FromBody] Cliente cliente)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.Clientes.Add(cliente);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCliente", new { id = cliente.IdCliente }, cliente);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 
         // DELETE: api/Cliente/5
         [HttpDelete("{id}")]

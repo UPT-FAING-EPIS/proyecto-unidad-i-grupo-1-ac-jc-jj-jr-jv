@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -16,8 +17,10 @@ namespace ClienteAPI.Controllers
     {
         private readonly BdClientesContext _context;
 
-        public TipoCorreoController(BdClientesContext context)
+        private readonly IMapper _mapper;
+        public TipoCorreoController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -53,13 +56,14 @@ namespace ClienteAPI.Controllers
         // PUT: api/TipoCorreo/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoCorreo(byte id, TipoCorreo tipoCorreo)
+        public async Task<IActionResult> PutTipoCorreo(byte id, TipoCorreoDTO tipoCorreoDTO)
         {
-            if (id != tipoCorreo.IdTipoCorreo)
+            if (id != tipoCorreoDTO.IdTipoCorreo)
             {
                 return BadRequest();
             }
 
+            TipoCorreo tipoCorreo = _mapper.Map<TipoCorreo>(tipoCorreoDTO);
             _context.Entry(tipoCorreo).State = EntityState.Modified;
 
             try
@@ -84,12 +88,13 @@ namespace ClienteAPI.Controllers
         // POST: api/TipoCorreo
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TipoCorreo>> PostTipoCorreo(TipoCorreo tipoCorreo)
+        public async Task<ActionResult<TipoCorreoDTO>> PostTipoCorreo(TipoCorreoDTO tipoCorreoDTO)
         {
           if (_context.TipoCorreos == null)
           {
               return Problem("Entity set 'BdClientesContext.TipoCorreos'  is null.");
           }
+          TipoCorreo tipoCorreo = _mapper.Map<TipoCorreo>(tipoCorreoDTO);
             _context.TipoCorreos.Add(tipoCorreo);
             await _context.SaveChangesAsync();
 

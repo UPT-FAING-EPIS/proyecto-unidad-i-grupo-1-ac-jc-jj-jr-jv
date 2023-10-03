@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,11 @@ namespace ClienteAPI.Controllers
     public class TipoResidenciumController : ControllerBase
     {
         private readonly BdClientesContext _context;
+        private readonly IMapper _mapper;
 
-        public TipoResidenciumController(BdClientesContext context)
+        public TipoResidenciumController(IMapper mapper,BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -53,13 +56,13 @@ namespace ClienteAPI.Controllers
         // PUT: api/TipoResidencium/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoResidencium(byte id, TipoResidencium tipoResidencium)
+        public async Task<IActionResult> PutTipoResidencium(byte id, TipoResidenciumDTO tipoResidenciumDTO)
         {
-            if (id != tipoResidencium.IdResidencia)
+            if (id != tipoResidenciumDTO.IdResidencia)
             {
                 return BadRequest();
             }
-
+            TipoResidencium tipoResidencium = _mapper.Map<TipoResidencium>(tipoResidenciumDTO);
             _context.Entry(tipoResidencium).State = EntityState.Modified;
 
             try
@@ -84,12 +87,13 @@ namespace ClienteAPI.Controllers
         // POST: api/TipoResidencium
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TipoResidencium>> PostTipoResidencium(TipoResidencium tipoResidencium)
+        public async Task<ActionResult<TipoResidenciumDTO>> PostTipoResidencium(TipoResidenciumDTO tipoResidenciumDTO)
         {
           if (_context.TipoResidencia == null)
           {
               return Problem("Entity set 'BdClientesContext.TipoResidencia'  is null.");
           }
+          TipoResidencium tipoResidencium = _mapper.Map<TipoResidencium>(tipoResidenciumDTO);
             _context.TipoResidencia.Add(tipoResidencium);
             await _context.SaveChangesAsync();
 
