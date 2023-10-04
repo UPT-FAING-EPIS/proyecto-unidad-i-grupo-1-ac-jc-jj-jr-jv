@@ -1,4 +1,4 @@
-# GRUPO DE  5 ESTUDIANTES
+![imagen](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207080/14d5d8ce-1f98-4b2b-b4fb-b8f48aadb89a)# GRUPO DE  5 ESTUDIANTES
 
 # INTEGRANTES : JOSE LUIS JARRO C. , Jean Valverde  Zamora  ,Jhony Rivera Mendoza , Anthoy Cano Sucso , Josue Chambilla Zuñiga  
 
@@ -160,9 +160,14 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
       AspxAutoDetectCookieSupport=1
   
 
+
 # Diccionario de Datos de la Base de Datos Relacional
 
 
 
 
 # Estándar de Programación
+
+![imagen](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207080/2b53e51e-15d5-4ba4-8dab-ea472629c3eb)
+![imagen](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207080/1cde3596-f258-480c-81f8-f51df276330f)
+
