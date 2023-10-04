@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -16,8 +17,10 @@ namespace ClienteAPI.Controllers
     {
         private readonly BdClientesContext _context;
 
-        public TipoCorreoController(BdClientesContext context)
+        private readonly IMapper _mapper;
+        public TipoCorreoController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -50,82 +53,53 @@ namespace ClienteAPI.Controllers
             return tipoCorreo;
         }
 
-// PUT: api/TipoCorreo/5
-[HttpPut("{id}")]
-public async Task<IActionResult> PutTipoCorreo(byte id, [FromBody] TipoCorreoDTO tipoCorreoDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    if (id != tipoCorreoDTO.IdTipoCorreo)
-    {
-        return BadRequest();
-    }
-
-    var tipoCorreo = await _context.TipoCorreos.FindAsync(id);
-
-    if (tipoCorreo == null)
-    {
-        return NotFound(); // Si el tipo de correo no existe, devolver un error 404.
-    }
-
-    // Actualizar los campos del tipo de correo con los valores proporcionados en el DTO.
-    tipoCorreo.TipoCorreo1 = tipoCorreoDTO.TipoCorreo1;
-    tipoCorreo.DesTipoCorreo = tipoCorreoDTO.DesTipoCorreo;
-
-    _context.Entry(tipoCorreo).State = EntityState.Modified;
-
-    try
-    {
-        await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!TipoCorreoExists(id))
+        // PUT: api/TipoCorreo/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTipoCorreo(byte id, TipoCorreoDTO tipoCorreoDTO)
         {
-            return NotFound();
+            if (id != tipoCorreoDTO.IdTipoCorreo)
+            {
+                return BadRequest();
+            }
+
+            TipoCorreo tipoCorreo = _mapper.Map<TipoCorreo>(tipoCorreoDTO);
+            _context.Entry(tipoCorreo).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TipoCorreoExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
-        else
+
+        // POST: api/TipoCorreo
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<TipoCorreoDTO>> PostTipoCorreo(TipoCorreoDTO tipoCorreoDTO)
         {
-            throw;
+          if (_context.TipoCorreos == null)
+          {
+              return Problem("Entity set 'BdClientesContext.TipoCorreos'  is null.");
+          }
+          TipoCorreo tipoCorreo = _mapper.Map<TipoCorreo>(tipoCorreoDTO);
+            _context.TipoCorreos.Add(tipoCorreo);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTipoCorreo", new { id = tipoCorreo.IdTipoCorreo }, tipoCorreo);
         }
-    }
-
-    return NoContent();
-}
-
-
-// POST: api/TipoCorreo
-[HttpPost]
-public async Task<ActionResult<TipoCorreoDTO>> PostTipoCorreo([FromBody] TipoCorreoDTO tipoCorreoDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    var tipoCorreo = new TipoCorreo
-    {
-        TipoCorreo1 = tipoCorreoDTO.TipoCorreo1,
-        DesTipoCorreo = tipoCorreoDTO.DesTipoCorreo
-    };
-
-    _context.TipoCorreos.Add(tipoCorreo);
-    await _context.SaveChangesAsync();
-
-    var tipoCorreoCreatedDTO = new TipoCorreoDTO
-    {
-        IdTipoCorreo = tipoCorreo.IdTipoCorreo,
-        TipoCorreo1 = tipoCorreo.TipoCorreo1,
-        DesTipoCorreo = tipoCorreo.DesTipoCorreo,
-        IdCli = tipoCorreo.IdCli // Añadir el IdCli si es necesario
-    };
-
-    return CreatedAtAction("GetTipoCorreo", new { id = tipoCorreo.IdTipoCorreo }, tipoCorreoCreatedDTO);
-}
-
 
         // DELETE: api/TipoCorreo/5
         [HttpDelete("{id}")]

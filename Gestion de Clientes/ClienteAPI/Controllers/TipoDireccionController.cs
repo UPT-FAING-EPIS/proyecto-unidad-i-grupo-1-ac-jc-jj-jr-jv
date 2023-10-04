@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,10 @@ namespace ClienteAPI.Controllers
     public class TipoDireccionController : ControllerBase
     {
         private readonly BdClientesContext _context;
-
-        public TipoDireccionController(BdClientesContext context)
+        private readonly IMapper _mapper;
+        public TipoDireccionController(IMapper mapper,BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -49,87 +51,53 @@ namespace ClienteAPI.Controllers
 
             return tipoDireccion;
         }
-// PUT: api/TipoDireccion/5
-[HttpPut("{id}")]
-public async Task<IActionResult> PutTipoDireccion(byte id, [FromBody] TipoDireccionDTO tipoDireccionDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
 
-    if (id != tipoDireccionDTO.IdDireccion)
-    {
-        return BadRequest();
-    }
-
-    var tipoDireccionInDatabase = await _context.TipoDireccions.FindAsync(id);
-
-    if (tipoDireccionInDatabase == null)
-    {
-        return NotFound(); // Si el tipo de dirección no existe, devolver un error 404.
-    }
-
-    // Actualizar los campos del tipo de dirección con los valores proporcionados en el DTO.
-    tipoDireccionInDatabase.TipoDireccion1 = tipoDireccionDTO.TipoDireccion1;
-    tipoDireccionInDatabase.DesTipoDireccion = tipoDireccionDTO.DesTipoDireccion;
-    tipoDireccionInDatabase.Calle = tipoDireccionDTO.Calle;
-    tipoDireccionInDatabase.Referencia = tipoDireccionDTO.Referencia;
-
-    _context.Entry(tipoDireccionInDatabase).State = EntityState.Modified;
-
-    try
-    {
-        await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!TipoDireccionExists(id))
+        // PUT: api/TipoDireccion/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTipoDireccion(byte id, TipoDireccionDTO tipoDireccionDTO)
         {
-            return NotFound();
+            if (id != tipoDireccionDTO.IdDireccion)
+            {
+                return BadRequest();
+            }
+            TipoDireccion tipoDireccion = _mapper.Map<TipoDireccion>(tipoDireccionDTO);
+            _context.Entry(tipoDireccion).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TipoDireccionExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
-        else
+
+        // POST: api/TipoDireccion
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<TipoDireccionDTO>> PostTipoDireccion(TipoDireccionDTO tipoDireccionDTO)
         {
-            throw;
+          if (_context.TipoDireccions == null)
+          {
+              return Problem("Entity set 'BdClientesContext.TipoDireccions'  is null.");
+          }
+          TipoDireccion tipoDireccion = _mapper.Map<TipoDireccion>(tipoDireccionDTO);
+            _context.TipoDireccions.Add(tipoDireccion);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTipoDireccion", new { id = tipoDireccion.IdDireccion }, tipoDireccion);
         }
-    }
-
-    return NoContent();
-}
-
-// POST: api/TipoDireccion
-[HttpPost]
-public async Task<ActionResult<TipoDireccionDTO>> PostTipoDireccion([FromBody] TipoDireccionDTO tipoDireccionDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    var tipoDireccion = new TipoDireccion
-    {
-        TipoDireccion1 = tipoDireccionDTO.TipoDireccion1,
-        DesTipoDireccion = tipoDireccionDTO.DesTipoDireccion,
-        Calle = tipoDireccionDTO.Calle,
-        Referencia = tipoDireccionDTO.Referencia
-    };
-
-    _context.TipoDireccions.Add(tipoDireccion);
-    await _context.SaveChangesAsync();
-
-    var tipoDireccionCreatedDTO = new TipoDireccionDTO
-    {
-        IdDireccion = tipoDireccion.IdDireccion,
-        TipoDireccion1 = tipoDireccion.TipoDireccion1,
-        DesTipoDireccion = tipoDireccion.DesTipoDireccion,
-        Calle = tipoDireccion.Calle,
-        Referencia = tipoDireccion.Referencia
-    };
-
-    return CreatedAtAction("GetTipoDireccion", new { id = tipoDireccion.IdDireccion }, tipoDireccionCreatedDTO);
-}
-
-
 
         // DELETE: api/TipoDireccion/5
         [HttpDelete("{id}")]

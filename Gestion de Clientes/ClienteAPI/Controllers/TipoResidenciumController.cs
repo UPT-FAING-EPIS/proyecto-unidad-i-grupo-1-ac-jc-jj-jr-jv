@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,11 @@ namespace ClienteAPI.Controllers
     public class TipoResidenciumController : ControllerBase
     {
         private readonly BdClientesContext _context;
+        private readonly IMapper _mapper;
 
-        public TipoResidenciumController(BdClientesContext context)
+        public TipoResidenciumController(IMapper mapper,BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -51,85 +54,51 @@ namespace ClienteAPI.Controllers
         }
 
         // PUT: api/TipoResidencium/5
-[HttpPut("{id}")]
-public async Task<IActionResult> PutTipoResidencium(byte id, [FromBody] TipoResidenciumDTO tipoResidenciumDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    if (id != tipoResidenciumDTO.IdResidencia)
-    {
-        return BadRequest();
-    }
-
-    var tipoResidenciumInDatabase = await _context.TipoResidencia.FindAsync(id);
-
-    if (tipoResidenciumInDatabase == null)
-    {
-        return NotFound(); // Si el tipo de residencia no existe, devolver un error 404.
-    }
-
-    // Actualizar los campos del tipo de residencia con los valores proporcionados en el DTO.
-    tipoResidenciumInDatabase.DesTipResi = tipoResidenciumDTO.DesTipResi;
-    tipoResidenciumInDatabase.Pais = tipoResidenciumDTO.Pais;
-    tipoResidenciumInDatabase.Ciudad = tipoResidenciumDTO.Ciudad;
-    tipoResidenciumInDatabase.Provincia = tipoResidenciumDTO.Provincia;
-
-    _context.Entry(tipoResidenciumInDatabase).State = EntityState.Modified;
-
-    try
-    {
-        await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!TipoResidenciumExists(id))
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTipoResidencium(byte id, TipoResidenciumDTO tipoResidenciumDTO)
         {
-            return NotFound();
+            if (id != tipoResidenciumDTO.IdResidencia)
+            {
+                return BadRequest();
+            }
+            TipoResidencium tipoResidencium = _mapper.Map<TipoResidencium>(tipoResidenciumDTO);
+            _context.Entry(tipoResidencium).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TipoResidenciumExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
-        else
+
+        // POST: api/TipoResidencium
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<TipoResidenciumDTO>> PostTipoResidencium(TipoResidenciumDTO tipoResidenciumDTO)
         {
-            throw;
+          if (_context.TipoResidencia == null)
+          {
+              return Problem("Entity set 'BdClientesContext.TipoResidencia'  is null.");
+          }
+          TipoResidencium tipoResidencium = _mapper.Map<TipoResidencium>(tipoResidenciumDTO);
+            _context.TipoResidencia.Add(tipoResidencium);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTipoResidencium", new { id = tipoResidencium.IdResidencia }, tipoResidencium);
         }
-    }
-
-    return NoContent();
-}
-
-// POST: api/TipoResidencium
-[HttpPost]
-public async Task<ActionResult<TipoResidenciumDTO>> PostTipoResidencium([FromBody] TipoResidenciumDTO tipoResidenciumDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    var tipoResidencium = new TipoResidencium
-    {
-        DesTipResi = tipoResidenciumDTO.DesTipResi,
-        Pais = tipoResidenciumDTO.Pais,
-        Ciudad = tipoResidenciumDTO.Ciudad,
-        Provincia = tipoResidenciumDTO.Provincia
-    };
-
-    _context.TipoResidencia.Add(tipoResidencium);
-    await _context.SaveChangesAsync();
-
-    var tipoResidenciumCreatedDTO = new TipoResidenciumDTO
-    {
-        IdResidencia = tipoResidencium.IdResidencia,
-        DesTipResi = tipoResidencium.DesTipResi,
-        Pais = tipoResidencium.Pais,
-        Ciudad = tipoResidencium.Ciudad,
-        Provincia = tipoResidencium.Provincia
-    };
-
-    return CreatedAtAction("GetTipoResidencium", new { id = tipoResidencium.IdResidencia }, tipoResidenciumCreatedDTO);
-}
-
 
         // DELETE: api/TipoResidencium/5
         [HttpDelete("{id}")]

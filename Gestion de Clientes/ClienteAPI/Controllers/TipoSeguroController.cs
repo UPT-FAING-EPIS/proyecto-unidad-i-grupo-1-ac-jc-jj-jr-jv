@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,11 @@ namespace ClienteAPI.Controllers
     public class TipoSeguroController : ControllerBase
     {
         private readonly BdClientesContext _context;
+        private readonly IMapper _mapper;
 
-        public TipoSeguroController(BdClientesContext context)
+        public TipoSeguroController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -51,85 +54,51 @@ namespace ClienteAPI.Controllers
         }
 
         // PUT: api/TipoSeguro/5
-[HttpPut("{id}")]
-public async Task<IActionResult> PutTipoSeguro(byte id, [FromBody] TipoSeguroDTO tipoSeguroDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    if (id != tipoSeguroDTO.IdSeguro)
-    {
-        return BadRequest();
-    }
-
-    var tipoSeguroInDatabase = await _context.TipoSeguros.FindAsync(id);
-
-    if (tipoSeguroInDatabase == null)
-    {
-        return NotFound(); // Si el tipo de seguro no existe, devolver un error 404.
-    }
-
-    // Actualizar los campos del tipo de seguro con los valores proporcionados en el DTO.
-    tipoSeguroInDatabase.TipSeguro = tipoSeguroDTO.TipSeguro;
-    tipoSeguroInDatabase.Poliza = tipoSeguroDTO.Poliza;
-    tipoSeguroInDatabase.Cobertura = tipoSeguroDTO.Cobertura;
-    tipoSeguroInDatabase.DocumentoSeguro = tipoSeguroDTO.DocumentoSeguro;
-
-    _context.Entry(tipoSeguroInDatabase).State = EntityState.Modified;
-
-    try
-    {
-        await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!TipoSeguroExists(id))
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTipoSeguro(byte id, TipoSeguroDTO tipoSeguroDTO)
         {
-            return NotFound();
+            if (id != tipoSeguroDTO.IdSeguro)
+            {
+                return BadRequest();
+            }
+            TipoSeguro tipoSeguro = _mapper.Map<TipoSeguro>(tipoSeguroDTO);
+            _context.Entry(tipoSeguro).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TipoSeguroExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
-        else
+
+        // POST: api/TipoSeguro
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<TipoSeguro>> PostTipoSeguro(TipoSeguroDTO tipoSeguroDTO)
         {
-            throw;
+          if (_context.TipoSeguros == null)
+          {
+              return Problem("Entity set 'BdClientesContext.TipoSeguros'  is null.");
+          }
+          TipoSeguro tipoSeguro = _mapper.Map<TipoSeguro>(tipoSeguroDTO);
+            _context.TipoSeguros.Add(tipoSeguro);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTipoSeguro", new { id = tipoSeguro.IdSeguro }, tipoSeguro);
         }
-    }
-
-    return NoContent();
-}
-
-// POST: api/TipoSeguro
-[HttpPost]
-public async Task<ActionResult<TipoSeguroDTO>> PostTipoSeguro([FromBody] TipoSeguroDTO tipoSeguroDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    var tipoSeguro = new TipoSeguro
-    {
-        TipSeguro = tipoSeguroDTO.TipSeguro,
-        Poliza = tipoSeguroDTO.Poliza,
-        Cobertura = tipoSeguroDTO.Cobertura,
-        DocumentoSeguro = tipoSeguroDTO.DocumentoSeguro
-    };
-
-    _context.TipoSeguros.Add(tipoSeguro);
-    await _context.SaveChangesAsync();
-
-    var tipoSeguroCreatedDTO = new TipoSeguroDTO
-    {
-        IdSeguro = tipoSeguro.IdSeguro,
-        TipSeguro = tipoSeguro.TipSeguro,
-        Poliza = tipoSeguro.Poliza,
-        Cobertura = tipoSeguro.Cobertura,
-        DocumentoSeguro = tipoSeguro.DocumentoSeguro
-    };
-
-    return CreatedAtAction("GetTipoSeguro", new { id = tipoSeguro.IdSeguro }, tipoSeguroCreatedDTO);
-}
-
 
         // DELETE: api/TipoSeguro/5
         [HttpDelete("{id}")]

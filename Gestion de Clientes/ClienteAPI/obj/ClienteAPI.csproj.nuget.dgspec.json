@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj": {}
+    "C:\\Users\\HP\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj": {
+    "C:\\Users\\HP\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
         "projectName": "ClienteAPI",
-        "projectPath": "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
-        "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hp\\proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv-GestionPRUEBA\\Gestion de Clientes\\ClienteAPI\\obj\\",
+        "projectPath": "C:\\Users\\HP\\Gestion de Clientes\\ClienteAPI\\ClienteAPI.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\Gestion de Clientes\\ClienteAPI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -40,6 +45,18 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.7.1, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.11, )"
