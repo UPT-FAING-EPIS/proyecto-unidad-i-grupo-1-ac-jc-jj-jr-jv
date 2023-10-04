@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClienteAPI.Data;
 using ClienteAPI.Models;
+using AutoMapper;
 
 namespace ClienteAPI.Controllers
 {
@@ -15,9 +16,10 @@ namespace ClienteAPI.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly BdClientesContext _context;
-
-        public ClienteController(BdClientesContext context)
+        private readonly IMapper _mapper;
+        public ClienteController(IMapper mapper, BdClientesContext context)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -49,107 +51,54 @@ namespace ClienteAPI.Controllers
 
             return cliente;
         }
-        
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-// PUT: api/Cliente/5
-[HttpPut("{id}")]
-public async Task<IActionResult> PutCliente(int id, [FromBody] ClienteCreateDTO clienteDTO)
-{
-    if (!ModelState.IsValid)
-    {
-        return BadRequest(ModelState);
-    }
-
-    if (id != clienteDTO.IdCliente)
-    {
-        return BadRequest();
-    }
-
-    var cliente = await _context.Clientes.FindAsync(id);
-
-    if (cliente == null)
-    {
-        return NotFound(); // Si el cliente no existe, devolver un error 404.
-    }
-
-    // Actualizar los campos del cliente con los valores proporcionados en el DTO.
-    cliente.NomCliente = clienteDTO.NomCliente;
-    cliente.ApePaterno = clienteDTO.ApePaterno;
-    cliente.ApeMaterno = clienteDTO.ApeMaterno;
-    cliente.Numero = clienteDTO.Numero;
-    cliente.Genero = clienteDTO.Genero;
-
-    _context.Entry(cliente).State = EntityState.Modified;
-
-    try
-    {
-        await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-        if (!ClienteExists(id))
+        // PUT: api/Cliente/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCliente(int id, ClienteCreateDTO clienteDTO)
         {
-            return NotFound();
-        }
-        else
-        {
-            throw;
-        }
-    }
-
-    return NoContent();
-}
-
-
-
-
-        // POST: api/Cliente
-        [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente([FromBody] ClienteCreateDTO clienteDTO)
-        {
-            if (!ModelState.IsValid)
+            if (id != clienteDTO.IdCliente)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
+            }
+            Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
+            _context.Entry(cliente).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ClienteExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            var cliente = new Cliente
-            {
-                NomCliente = clienteDTO.NomCliente,
-                ApePaterno = clienteDTO.ApePaterno,
-                ApeMaterno = clienteDTO.ApeMaterno,
-                Numero = clienteDTO.Numero,
-                Genero = clienteDTO.Genero
-            };
+            return NoContent();
+        }
 
+        // POST: api/Cliente
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<ClienteCreateDTO>> PostCliente(ClienteCreateDTO clienteDTO)
+        {
+          if (_context.Clientes == null)
+          {
+              return Problem("Entity set 'BdClientesContext.Clientes'  is null.");
+          }
+          Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCliente", new { id = cliente.IdCliente }, cliente);
         }
 
-
-
-        
         // DELETE: api/Cliente/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)

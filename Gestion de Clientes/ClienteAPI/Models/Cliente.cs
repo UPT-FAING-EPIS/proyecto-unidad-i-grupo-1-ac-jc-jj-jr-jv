@@ -21,7 +21,6 @@ namespace ClienteAPI.Models
 
         public string? Genero { get; set; }
 
-        public virtual ICollection<ClienteDetalle?> ClienteDetalles { get; set; } = new List<ClienteDetalle?>();
 
         public virtual ICollection<TipoCorreo?> TipoCorreos { get; set; } = new List<TipoCorreo?>();
 

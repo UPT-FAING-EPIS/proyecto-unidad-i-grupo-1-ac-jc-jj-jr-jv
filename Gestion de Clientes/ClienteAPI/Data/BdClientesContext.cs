@@ -18,7 +18,7 @@ public partial class BdClientesContext : DbContext
 
     public virtual DbSet<Cliente> Clientes { get; set; }
 
-    public virtual DbSet<ClienteDetalle> ClienteDetalles { get; set; }
+  
 
     public virtual DbSet<TipoCorreo> TipoCorreos { get; set; }
 
@@ -61,36 +61,6 @@ public partial class BdClientesContext : DbContext
             entity.Property(e => e.Numero).HasColumnName("NUMERO");
         });
 
-        modelBuilder.Entity<ClienteDetalle>(entity =>
-        {
-            entity.HasKey(e => e.IdCliDet).HasName("PK_CLI_DETALLE");
-
-            entity.ToTable("CLIENTE_DETALLE");
-
-            entity.Property(e => e.IdCliDet)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ID_CLI_DET");
-            entity.Property(e => e.Correo)
-                .HasMaxLength(200)
-                .HasColumnName("CORREO");
-            entity.Property(e => e.Direccion)
-                .HasMaxLength(200)
-                .HasColumnName("DIRECCION");
-            entity.Property(e => e.Documento).HasColumnName("DOCUMENTO");
-            entity.Property(e => e.IdCli).HasColumnName("ID_CLI");
-            entity.Property(e => e.Residencia)
-                .HasMaxLength(200)
-                .HasColumnName("RESIDENCIA");
-            entity.Property(e => e.Seguro)
-                .HasMaxLength(40)
-                .IsUnicode(false)
-                .HasColumnName("SEGURO");
-
-            entity.HasOne(d => d.IdCliNavigation).WithMany(p => p.ClienteDetalles)
-                .HasForeignKey(d => d.IdCli)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CLIENTE_DETALLE_CLIENTES");
-        });
 
         modelBuilder.Entity<TipoCorreo>(entity =>
         {
