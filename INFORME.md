@@ -166,3 +166,6 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
 
 
 # Estándar de Programación
+
+![imagen](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207080/aab7b854-8179-4cf9-92e6-97e87f2ce868)
+
