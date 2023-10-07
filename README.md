@@ -151,6 +151,9 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
 - Diagrama de Componentes.
 
 # Arquitectura
+- Diagrama de Arquitectura
+  
+![image](ArqDiagram.png)
 
 # Diagrama de Base de Datos
 
