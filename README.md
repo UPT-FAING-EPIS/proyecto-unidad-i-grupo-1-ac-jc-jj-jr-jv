@@ -137,8 +137,9 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
 
 # Diagramas  
 - Diagramas de Casos de Uso.
-- 
-       ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/f105161a-0022-493f-b27d-a551c4d154a2)
+
+  ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/ceb3e252-6615-4268-a72b-9f0829dc45fa)
+
 
 
 - Diagrama de Clases.
