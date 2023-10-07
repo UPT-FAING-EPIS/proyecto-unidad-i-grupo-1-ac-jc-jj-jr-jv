@@ -1,6 +1,6 @@
 # GRUPO DE  5 ESTUDIANTES
 
-# INTEGRANTES : JOSE LUIS JARRO C. , Jean Valverde  Zamora  ,Jhony Rivera Mendoza , Anthoy Cano Sucso , Josue Chambilla Zuñiga  
+# INTEGRANTES : JOSE LUIS JARRO C. , Jean Valverde  Zamora  ,Jhonny Rivera Mendoza , Anthoy Cano Sucso, Josue Abraham Chambilla Zuñiga
 
 # Gestion de Clientes
 
@@ -157,7 +157,7 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
 
 # Diagrama de Base de Datos
 
-   ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/45c1a445-0ded-42d2-a666-72be3686c289)
+   ![image](bddiagrama.png)
 
 # Diagrama de Componentes
 
