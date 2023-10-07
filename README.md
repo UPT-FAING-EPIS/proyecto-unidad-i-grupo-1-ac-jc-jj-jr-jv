@@ -143,6 +143,11 @@ Desarrollo de una Aplicación de Gestión de Clientes en C# y SQL Server.
      ![image](https://github.com/UPT-FAING-EPIS/proyecto-unidad-i-grupo-1-ac-jc-jj-jr-jv/assets/90207645/63f3fea8-3f1f-45d8-a4f4-4e95e397165c)
 
 - Diagrama de Clases.
+  ![image](diagramaControladores.png)
+  ![image](DTOsDiagram.png)
+  ![image](ModelsDiagram.png)
+  ![image](ValidationDiagram.png)
+  
 - Diagrama de Componentes.
 
 # Arquitectura
